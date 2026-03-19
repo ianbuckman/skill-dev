@@ -152,38 +152,21 @@ final class AppState {
 
 ## 技术约束
 
-### Swift & SwiftUI
+### 平台与构建
 - 目标平台: macOS 14+ (Sonoma)
 - 使用 Swift 5.10+，启用 StrictConcurrency
-- **SwiftUI first** — 仅在 SwiftUI 无法实现时使用 AppKit
-- 使用 `@Observable` 宏，**不要**使用 `ObservableObject` / `@Published`
-- 使用 `@Environment` 传递共享状态，**不要**使用 singletons
-- 使用 SF Symbols 做图标（`systemImage:` 参数）
-- 遵循 Apple Human Interface Guidelines
-
-### 代码风格
-- View body 不超过 20 行，超过就拆分子 View
-- 使用 `foregroundStyle()` 而非 `foregroundColor()`
-- 使用 `.task {}` 而非 `.onAppear` 中调 async
-- 错误使用 Swift 原生 Error + do/catch，不要用 Result 包装
-- 文件命名: PascalCase，与主类型同名
-
-### 构建
-- 编译: `swift build`
-- Release: `swift build -c release`
-- 测试: `swift test`
+- 编译: `swift build` / Release: `swift build -c release` / 测试: `swift test`
 - 产物位置: `.build/release/[AppName]`
+
+### 编码质量
+- SwiftUI 规则由 /swiftui-pro 提供，并发规则由 /swift-concurrency-pro 提供
+- macOS 特有规则参见 mac-app-forge 的 references/macos-patterns.md
+- 遵循 Apple Human Interface Guidelines，使用 SF Symbols 做图标
 
 ### 数据存储
 - 用户偏好: `@AppStorage` / `UserDefaults`
 - 结构化数据: SwiftData 或 JSON 文件存 `~/Library/Application Support/[AppName]/`
 - 不要用 CoreData
-
-### 常见陷阱
-- ⚠️ 不要在 View.body 中做耗时操作
-- ⚠️ 不要忘记 `@MainActor` 标注 UI 相关代码
-- ⚠️ SwiftUI 编译器报 "unable to type-check" → 拆分 View
-- ⚠️ 不要用 `AnyView` 做类型擦除，用 `@ViewBuilder` 或 `some View`
 ```
 
 ## Info.plist 模板

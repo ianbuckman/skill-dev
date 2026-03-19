@@ -13,6 +13,21 @@ description: 从创意到 .dmg 的全自动 macOS 应用构建流水线。当用
 - Xcode Command Line Tools（`xcode-select --install`）
 - 可选：`create-dmg` (`brew install create-dmg`)，若未安装则 fallback 到 `hdiutil`
 
+## 专业 Skill 编排
+
+mac-app-forge 专注流水线编排 + macOS 应用特有知识，编码质量委托给专业 skills：
+
+| Skill | 阶段 | 职责 | 未安装时 Fallback |
+|-------|------|------|-------------------|
+| /swiftui-pro | Phase 4, 5 | SwiftUI 审查 | references/macos-patterns.md |
+| /swift-concurrency-pro | Phase 4, 5 | 并发正确性 | macos-patterns.md fallback 段 |
+| /swift-testing-pro | Phase 5 | 关键模块测试 | 跳过（烟雾测试仍执行） |
+| /swift-api-design-guidelines-skill | Phase 4 | API 命名 | 跳过 |
+| /swiftdata-pro | Phase 4 | SwiftData 审查 | 跳过 |
+| /review | Phase 5 | 结构性审查 | 内置陷阱扫描 |
+
+**检测方式**：流水线开始时检查可用 skills 列表，记录哪些已安装。未安装的 skill 自动 fallback 到上表右列。
+
 ## 流水线总览
 
 ```
@@ -187,10 +202,20 @@ Phase 2
 7. git commit（含模块名）
 8. 更新 `_task_state.md` 勾选该模块
 
-### 编码规则
-- Swift: 读取 `references/swift-coding-rules.md`。SwiftUI first，`@Observable`，SF Symbols，View body ≤20 行
-- Electron: 读取 `references/electron-coding-rules.md`
-- 通用: 少依赖、错误处理、数据存 `~/Library/Application Support/`
+### 质量关协议
+
+**Swift 路线** — 每个模块编码+编译通过后，执行质量关：
+1. 调用 /swiftui-pro 审查该模块的 SwiftUI 代码
+2. 如模块含并发代码，调用 /swift-concurrency-pro 审查
+3. 如模块使用 SwiftData，调用 /swiftdata-pro 审查
+4. 修复审查发现的问题 → 重新编译 → commit
+5. macOS 特有规则始终读取 `references/macos-patterns.md`
+
+> 未安装专业 skill 时：读取 `references/macos-patterns.md` 中的 fallback 段作为基本规则
+
+**Electron 路线** — 读取 `references/electron-coding-rules.md`（无对应专业 skill，规则不变）
+
+**通用** — 少依赖、错误处理、数据存 `~/Library/Application Support/`
 
 ### 所有模块完成后
 全量编译确认 → 更新 `_task_state.md` 勾选 Phase 4
@@ -244,21 +269,32 @@ fi
 
 崩溃常见原因：缺少资源文件、Info.plist 错误、强制解包 nil、Environment 未注入
 
-### Step 3: 代码审查 — 运行时陷阱扫描
+### Step 2.5: 关键模块测试（Swift 路线）
 
-重新阅读所有源代码文件，逐项检查以下已知陷阱（编译器不报错但导致功能失效）：
+调用 /swift-testing-pro 为关键 Service 模块编写测试，然后运行 `swift test`。
+> 未安装 /swift-testing-pro 时跳过此步骤，烟雾测试仍提供基本保障。
 
-**Swift/SwiftUI：**
-1. **AppDelegate 双实例** — `@NSApplicationDelegateAdaptor` 时不要 `static let shared = AppDelegate()`，用 `NSApp.delegate as? AppDelegate`
-2. **@Observable 环境断裂** — View 用 `@Environment(X.self)` 但父级缺 `.environment(x)`
-3. **Timer/Monitor 引用丢失** — 必须被属性强引用持有
-4. **NSPanel 创建时机** — 应在 `applicationDidFinishLaunching` 中创建，不要在 Scene body 中
-5. **全局快捷键权限** — `addGlobalMonitorForEvents` 需辅助功能授权，README 中提醒
+### Step 3: 代码审查（分层）
 
-**Electron：**
+**3a: 专业 Skill 全量审查**
+- 调用 /swiftui-pro 审查所有 SwiftUI 代码
+- 调用 /swift-concurrency-pro 审查所有并发代码
+- 修复发现的问题 → 重新编译
+
+**3b: macOS 运行时陷阱扫描（mac-app-forge 独有知识，不可委托）**
+
+重新阅读所有源代码文件，逐项检查 `references/macos-patterns.md` 中的 5 个运行时陷阱。
+
+**Swift/SwiftUI 陷阱**：AppDelegate 双实例、@Observable 环境断裂、Timer/Monitor 引用丢失、NSPanel 创建时机、全局快捷键权限
+
+**Electron 陷阱**：
 1. IPC 通道名称主/渲染进程不匹配
 2. `contextIsolation` 开启后渲染进程无法直接用 Node API
 3. 窗口 `show: false` 忘记 `ready-to-show` 事件
+
+**3c: 结构性审查（可选）**
+- 调用 /review 对完整 diff 做结构性审查
+> 未安装时跳过，3b 的陷阱扫描仍提供基本保障。
 
 发现问题 → 修复 → 重新编译 → 回到 Step 1
 
