@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>SnapCraft</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.local.snapcraft</string>
+    <key>CFBundleVersion</key>
+    <string>1.0.0</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.0</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleExecutable</key>
+    <string>SnapCraft</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>14.0</string>
+    <key>LSUIElement</key>
+    <true/>
+    <key>NSHumanReadableCopyright</key>
+    <string>Copyright © 2026. All rights reserved.</string>
+    <key>NSScreenCaptureUsageDescription</key>
+    <string>SnapCraft needs screen capture permission to take screenshots and record your screen.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>SnapCraft needs microphone access to record audio during screen recordings.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>SnapCraft needs camera access for picture-in-picture webcam overlay during recordings.</string>
+</dict>
+</plist>
