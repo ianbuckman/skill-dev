@@ -20,7 +20,10 @@ struct SnapCraftApp: App {
 }
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    var coordinator: CaptureCoordinator?
+
     func applicationDidFinishLaunching(_ notification: Notification) {
-        // Initialize services that need early setup
+        // Get app state from the SwiftUI app
+        // Coordinator will be set up when menu bar view appears
     }
 }

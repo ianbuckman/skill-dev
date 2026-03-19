@@ -2,23 +2,31 @@ import SwiftUI
 
 struct MenuBarView: View {
     @Environment(AppState.self) private var appState
+    @State private var coordinator: CaptureCoordinator?
 
     var body: some View {
         VStack(spacing: 0) {
-            CaptureModesSection()
+            CaptureModesSection(coordinator: coordinator)
             Divider()
-            RecordingModesSection()
+            RecordingModesSection(coordinator: coordinator, isRecording: appState.isRecording)
             Divider()
-            QuickActionsSection()
+            QuickActionsSection(coordinator: coordinator)
             Divider()
             FooterSection()
         }
         .frame(width: 260)
+        .task {
+            if coordinator == nil {
+                let coord = CaptureCoordinator(appState: appState)
+                coord.registerDefaultHotkeys()
+                coordinator = coord
+            }
+        }
     }
 }
 
 private struct CaptureModesSection: View {
-    @Environment(AppState.self) private var appState
+    let coordinator: CaptureCoordinator?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -34,7 +42,7 @@ private struct CaptureModesSection: View {
                     systemImage: mode.systemImage,
                     shortcut: mode.shortcutHint
                 ) {
-                    // TODO: Trigger capture
+                    coordinator?.performCapture(mode: mode)
                 }
             }
         }
@@ -43,6 +51,9 @@ private struct CaptureModesSection: View {
 }
 
 private struct RecordingModesSection: View {
+    let coordinator: CaptureCoordinator?
+    let isRecording: Bool
+
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text("Recording")
@@ -51,13 +62,24 @@ private struct RecordingModesSection: View {
                 .padding(.horizontal, 12)
                 .padding(.top, 4)
 
-            ForEach(RecordingMode.allCases) { mode in
+            if isRecording {
                 MenuBarButton(
-                    title: mode.displayName,
-                    systemImage: mode.systemImage,
-                    shortcut: mode.shortcutHint
+                    title: "Stop Recording",
+                    systemImage: "stop.circle.fill",
+                    shortcut: ""
                 ) {
-                    // TODO: Trigger recording
+                    coordinator?.stopRecording()
+                }
+                .foregroundStyle(.red)
+            } else {
+                ForEach(RecordingMode.allCases) { mode in
+                    MenuBarButton(
+                        title: mode.displayName,
+                        systemImage: mode.systemImage,
+                        shortcut: mode.shortcutHint
+                    ) {
+                        coordinator?.startRecording(mode: mode)
+                    }
                 }
             }
         }
@@ -66,11 +88,18 @@ private struct RecordingModesSection: View {
 }
 
 private struct QuickActionsSection: View {
+    let coordinator: CaptureCoordinator?
+
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            MenuBarButton(title: "History", systemImage: "clock.arrow.circlepath", shortcut: "") {
-                // TODO: Open history
+            MenuBarButton(
+                title: "Toggle Desktop Icons",
+                systemImage: "desktopcomputer",
+                shortcut: ""
+            ) {
+                coordinator?.desktopIconService.toggleDesktopIcons()
             }
+
             MenuBarButton(title: "Settings...", systemImage: "gear", shortcut: "⌘,") {
                 NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
             }
