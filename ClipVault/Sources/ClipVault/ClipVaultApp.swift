@@ -20,8 +20,12 @@ struct ClipVaultApp: App {
 
                     let hk = HotkeyService()
                     hk.onToggle = {
-                        // Activate the app to trigger the MenuBarExtra popover
-                        NSApp.activate(ignoringOtherApps: true)
+                        // Find the MenuBarExtra's status item button and simulate a click
+                        if let button = NSApp.windows
+                            .compactMap({ $0.value(forKey: "statusItem") as? NSStatusItem })
+                            .first?.button {
+                            button.performClick(nil)
+                        }
                     }
                     hk.start()
                     hotkeyService = hk

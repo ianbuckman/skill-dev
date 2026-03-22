@@ -25,11 +25,11 @@ final class HotkeyService {
     }
 
     deinit {
-        if let monitor = globalMonitor {
-            NSEvent.removeMonitor(monitor)
-        }
-        if let monitor = localMonitor {
-            NSEvent.removeMonitor(monitor)
+        let g = globalMonitor
+        let l = localMonitor
+        DispatchQueue.main.async { @Sendable in
+            if let monitor = g { NSEvent.removeMonitor(monitor) }
+            if let monitor = l { NSEvent.removeMonitor(monitor) }
         }
     }
 

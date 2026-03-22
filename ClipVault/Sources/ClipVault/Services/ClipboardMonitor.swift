@@ -18,7 +18,8 @@ final class ClipboardMonitor {
         pollTask = Task { [weak self] in
             while !Task.isCancelled {
                 try? await Task.sleep(for: .milliseconds(500))
-                self?.checkClipboard()
+                guard let self else { break }
+                self.checkClipboard()
             }
         }
     }

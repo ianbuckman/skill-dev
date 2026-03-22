@@ -48,6 +48,12 @@ actor StorageService {
         }
     }
 
+    func flushToDisk(_ items: [ClipboardItem]) {
+        debounceTask?.cancel()
+        debounceTask = nil
+        writeToFile(items)
+    }
+
     private func writeToFile(_ items: [ClipboardItem]) {
         do {
             let directory = fileURL.deletingLastPathComponent()

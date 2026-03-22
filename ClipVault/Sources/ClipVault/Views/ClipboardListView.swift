@@ -162,7 +162,7 @@ struct ClipboardListView: View {
             }
 
             Button("Quit") {
-                NSApplication.shared.terminate(nil)
+                appState.flushAndQuit()
             }
             .buttonStyle(.borderless)
             .font(.caption)

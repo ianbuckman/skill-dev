@@ -65,6 +65,14 @@ final class AppState {
         }
     }
 
+    func flushAndQuit() {
+        let snapshot = items
+        Task {
+            await storageService.flushToDisk(snapshot)
+            NSApplication.shared.terminate(nil)
+        }
+    }
+
     // MARK: - Mutations
 
     func add(_ item: ClipboardItem) {
