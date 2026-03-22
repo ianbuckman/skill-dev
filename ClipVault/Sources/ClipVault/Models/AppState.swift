@@ -6,11 +6,26 @@ import Foundation
 final class AppState {
     var items: [ClipboardItem] = []
     var searchText: String = ""
-    var maxHistoryCount: Int = 500
-    var recordImages: Bool = true
+    var maxHistoryCount: Int {
+        didSet { UserDefaults.standard.set(maxHistoryCount, forKey: "maxHistoryCount") }
+    }
+    var recordImages: Bool {
+        didSet { UserDefaults.standard.set(recordImages, forKey: "recordImages") }
+    }
     var skipNextChange: Bool = false
 
     private let storageService = StorageService()
+
+    init() {
+        let defaults = UserDefaults.standard
+        let savedMax = defaults.integer(forKey: "maxHistoryCount")
+        self.maxHistoryCount = savedMax > 0 ? savedMax : 500
+        if defaults.object(forKey: "recordImages") != nil {
+            self.recordImages = defaults.bool(forKey: "recordImages")
+        } else {
+            self.recordImages = true
+        }
+    }
 
     var filteredItems: [ClipboardItem] {
         let pinned: [ClipboardItem]

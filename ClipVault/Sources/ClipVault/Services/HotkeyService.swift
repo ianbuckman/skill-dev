@@ -4,19 +4,32 @@ import AppKit
 final class HotkeyService {
     var onToggle: (() -> Void)?
 
-    private var globalMonitor: Any?
-    private var localMonitor: Any?
+    private nonisolated(unsafe) var globalMonitor: Any?
+    private nonisolated(unsafe) var localMonitor: Any?
 
     func start() {
         guard globalMonitor == nil else { return }
 
         globalMonitor = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { [weak self] event in
-            self?.handleKeyEvent(event)
+            Task { @MainActor in
+                self?.handleKeyEvent(event)
+            }
         }
 
         localMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
-            self?.handleKeyEvent(event)
+            Task { @MainActor in
+                self?.handleKeyEvent(event)
+            }
             return event
+        }
+    }
+
+    deinit {
+        if let monitor = globalMonitor {
+            NSEvent.removeMonitor(monitor)
+        }
+        if let monitor = localMonitor {
+            NSEvent.removeMonitor(monitor)
         }
     }
 

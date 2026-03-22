@@ -41,9 +41,7 @@ struct ClipboardListView: View {
 
             Spacer()
 
-            Button {
-                NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
-            } label: {
+            SettingsLink {
                 Image(systemName: "gearshape")
                     .font(.body)
             }
@@ -156,11 +154,7 @@ struct ClipboardListView: View {
             .buttonStyle(.borderless)
             .font(.caption)
             .foregroundStyle(.secondary)
-            .confirmationDialog(
-                "Clear all unpinned items?",
-                isPresented: $showClearConfirmation,
-                titleVisibility: .visible
-            ) {
+            .alert("Clear all unpinned items?", isPresented: $showClearConfirmation) {
                 Button("Clear All", role: .destructive) {
                     appState.clearAll()
                 }
