@@ -24,13 +24,13 @@ actor StorageService {
     func save(_ items: [ClipboardItem]) {
         debounceTask?.cancel()
         let currentItems = items
-        debounceTask = Task { [weak self] in
+        debounceTask = Task {
             do {
                 try await Task.sleep(for: .seconds(2))
             } catch {
                 return
             }
-            await self?.writeToFile(currentItems)
+            writeToFile(currentItems)
         }
     }
 

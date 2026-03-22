@@ -4,7 +4,6 @@ import Foundation
 @MainActor
 final class ClipboardMonitor {
     private let appState: AppState
-    private var timer: Timer?
     private var lastChangeCount: Int
 
     init(appState: AppState) {
@@ -12,18 +11,21 @@ final class ClipboardMonitor {
         self.lastChangeCount = NSPasteboard.general.changeCount
     }
 
+    private var pollTask: Task<Void, Never>?
+
     func start() {
-        guard timer == nil else { return }
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
-            MainActor.assumeIsolated {
+        guard pollTask == nil else { return }
+        pollTask = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .milliseconds(500))
                 self?.checkClipboard()
             }
         }
     }
 
     func stop() {
-        timer?.invalidate()
-        timer = nil
+        pollTask?.cancel()
+        pollTask = nil
     }
 
     private func checkClipboard() {
