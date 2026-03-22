@@ -1,0 +1,75 @@
+{
+  "": {
+    "swift-dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/master.swiftdeps"
+  },
+  "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/ClipVaultApp.swift": {
+    "dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipVaultApp.d",
+    "object": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipVaultApp.swift.o",
+    "swiftmodule": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipVaultApp~partial.swiftmodule",
+    "swift-dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipVaultApp.swiftdeps",
+    "diagnostics": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipVaultApp.dia"
+  },
+  "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Models/AppState.swift": {
+    "dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/AppState.d",
+    "object": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/AppState.swift.o",
+    "swiftmodule": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/AppState~partial.swiftmodule",
+    "swift-dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/AppState.swiftdeps",
+    "diagnostics": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/AppState.dia"
+  },
+  "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Models/ClipboardItem.swift": {
+    "dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardItem.d",
+    "object": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardItem.swift.o",
+    "swiftmodule": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardItem~partial.swiftmodule",
+    "swift-dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardItem.swiftdeps",
+    "diagnostics": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardItem.dia"
+  },
+  "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Services/ClipboardMonitor.swift": {
+    "dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardMonitor.d",
+    "object": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardMonitor.swift.o",
+    "swiftmodule": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardMonitor~partial.swiftmodule",
+    "swift-dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardMonitor.swiftdeps",
+    "diagnostics": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardMonitor.dia"
+  },
+  "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Services/HotkeyService.swift": {
+    "dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/HotkeyService.d",
+    "object": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/HotkeyService.swift.o",
+    "swiftmodule": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/HotkeyService~partial.swiftmodule",
+    "swift-dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/HotkeyService.swiftdeps",
+    "diagnostics": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/HotkeyService.dia"
+  },
+  "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Services/StorageService.swift": {
+    "dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/StorageService.d",
+    "object": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/StorageService.swift.o",
+    "swiftmodule": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/StorageService~partial.swiftmodule",
+    "swift-dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/StorageService.swiftdeps",
+    "diagnostics": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/StorageService.dia"
+  },
+  "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Views/ClipboardListView.swift": {
+    "dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardListView.d",
+    "object": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardListView.swift.o",
+    "swiftmodule": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardListView~partial.swiftmodule",
+    "swift-dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardListView.swiftdeps",
+    "diagnostics": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardListView.dia"
+  },
+  "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Views/ClipboardRowView.swift": {
+    "dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardRowView.d",
+    "object": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardRowView.swift.o",
+    "swiftmodule": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardRowView~partial.swiftmodule",
+    "swift-dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardRowView.swiftdeps",
+    "diagnostics": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ClipboardRowView.dia"
+  },
+  "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Views/ContentView.swift": {
+    "dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ContentView.d",
+    "object": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ContentView.swift.o",
+    "swiftmodule": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ContentView~partial.swiftmodule",
+    "swift-dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ContentView.swiftdeps",
+    "diagnostics": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/ContentView.dia"
+  },
+  "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Views/SettingsView.swift": {
+    "dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/SettingsView.d",
+    "object": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/SettingsView.swift.o",
+    "swiftmodule": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/SettingsView~partial.swiftmodule",
+    "swift-dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/SettingsView.swiftdeps",
+    "diagnostics": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVault.build/SettingsView.dia"
+  }
+}

@@ -1,0 +1,10 @@
+/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/ClipVaultApp.swift
+/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Models/AppState.swift
+/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Models/ClipboardItem.swift
+/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Services/ClipboardMonitor.swift
+/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Services/HotkeyService.swift
+/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Services/StorageService.swift
+/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Views/ClipboardListView.swift
+/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Views/ClipboardRowView.swift
+/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Views/ContentView.swift
+/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/Sources/ClipVault/Views/SettingsView.swift

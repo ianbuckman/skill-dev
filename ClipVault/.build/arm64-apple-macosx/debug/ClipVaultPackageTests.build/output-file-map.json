@@ -1,0 +1,12 @@
+{
+  "": {
+    "swift-dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVaultPackageTests.build/master.swiftdeps"
+  },
+  "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVaultPackageTests.derived/runner.swift": {
+    "dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVaultPackageTests.build/runner.d",
+    "object": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVaultPackageTests.build/runner.swift.o",
+    "swiftmodule": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVaultPackageTests.build/runner~partial.swiftmodule",
+    "swift-dependencies": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVaultPackageTests.build/runner.swiftdeps",
+    "diagnostics": "/Users/nqt/conductor/workspaces/skill-dev-v1/quito-v1/ClipVault/.build/arm64-apple-macosx/debug/ClipVaultPackageTests.build/runner.dia"
+  }
+}
