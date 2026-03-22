@@ -1,5 +1,66 @@
+import AppKit
 import Foundation
 
-// Placeholder — implemented in Phase 4
+@MainActor
 final class ClipboardMonitor {
+    private let appState: AppState
+    private var timer: Timer?
+    private var lastChangeCount: Int
+
+    init(appState: AppState) {
+        self.appState = appState
+        self.lastChangeCount = NSPasteboard.general.changeCount
+    }
+
+    func start() {
+        guard timer == nil else { return }
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
+            MainActor.assumeIsolated {
+                self?.checkClipboard()
+            }
+        }
+    }
+
+    func stop() {
+        timer?.invalidate()
+        timer = nil
+    }
+
+    private func checkClipboard() {
+        let pasteboard = NSPasteboard.general
+        let currentChangeCount = pasteboard.changeCount
+
+        guard currentChangeCount != lastChangeCount else { return }
+        lastChangeCount = currentChangeCount
+
+        // If the app itself just wrote to the pasteboard, skip this change.
+        if appState.skipNextChange {
+            appState.skipNextChange = false
+            return
+        }
+
+        // Try text first.
+        if let text = pasteboard.string(forType: .string), !text.isEmpty {
+            // Avoid duplicate: skip if the most recent item has the same text.
+            if case .text(let lastText) = appState.items.first?.content, lastText == text {
+                return
+            }
+            let item = ClipboardItem(content: .text(text))
+            appState.add(item)
+            return
+        }
+
+        // Try image (only if recording images is enabled).
+        guard appState.recordImages else { return }
+
+        if let imageData = pasteboard.data(forType: .png) ?? pasteboard.data(forType: .tiff),
+           !imageData.isEmpty {
+            // Avoid duplicate: skip if the most recent item has identical image data.
+            if case .image(let lastData) = appState.items.first?.content, lastData == imageData {
+                return
+            }
+            let item = ClipboardItem(content: .image(imageData))
+            appState.add(item)
+        }
+    }
 }
