@@ -59,7 +59,10 @@ description: 从创意到 .dmg 的全自动 macOS 应用构建流水线。当用
 - ❌ 不自己写模块实现代码（全部委托给 Implementor sub-agent）
 - ❌ 不自己做代码审查（全部委托给 Verifier sub-agent）
 
-**唯一例外**：Phase 3 脚手架代码和小型修复（< 20 行）可以由 Coordinator 直接完成。
+**唯一例外**：
+- Phase 3 脚手架代码可以由 Coordinator 直接完成
+- **Warning/Info** 级别的小型修复（< 20 行）可以由 Coordinator 直接完成
+- **Critical 级别问题必须委托给 Implementor sub-agent，无论修复大小**
 
 ## 专业 Skill 编排
 
@@ -195,6 +198,20 @@ mac-app-forge 专注流水线编排 + macOS 应用特有知识，编码质量委
 3. 更新 memory（forge-[AppName]-progress）
 4. 一句话汇报
 
+### 第四层：执行审计日志（`_forge_log.md`）
+
+Coordinator 在每个 Gate 完成和 Phase 完成时，向项目目录的 `_forge_log.md` 追加一条记录。
+
+格式：
+```
+## [Phase N Gate / Phase N Complete / Batch N Checkpoint]
+- 读取: [文件列表及关键事实，如"phase1_concept.md: App=ClipVault, 3 core features"]
+- 进度: [已完成/待完成摘要]
+- 时间: [当前时间]
+```
+
+此文件为**追加写入（append-only）**，不删除已有条目。Phase 5 Verifier 审查时应检查此日志的完整性。
+
 ### 编译输出压缩
 
 输出超 50 行用 `2>&1 | tail -30`。成功时只记"编译成功，0 errors，N warnings"。
@@ -220,18 +237,37 @@ mac-app-forge 专注流水线编排 + macOS 应用特有知识，编码质量委
 ```
 
 4. 用户确认后，写入 `phase1_concept.md`（内容包含 App 名称、一句话描述、核心功能列表、App 类型、目标用户、项目路径）
-5. 创建 Phase 级 Tasks：
+5. 创建 **Gate → Phase → Memory 依赖链** Tasks（用 `blockedBy` 强制执行顺序）：
 
 ```
-TaskCreate: "Phase 2: 技术方案 → ARCHITECTURE.md" (pending)
-TaskCreate: "Phase 3: 脚手架生成" (pending)
-TaskCreate: "Phase 4: 编码实现" (pending)
-TaskCreate: "Phase 5: 集成验证" (pending)
-TaskCreate: "Phase 6: 打包发布 → .dmg + README.md" (pending)
-TaskCreate: "Phase 7: 交付与用户验证" (pending)
+TaskCreate: "Gate 2: 读取 phase1_concept.md，准备 Phase 2"
+  description: "1. Read phase1_concept.md 2. TaskList 确认进度 3. 追加 _forge_log.md 4. 标记完成"
+
+TaskCreate: "Phase 2: 技术方案 → ARCHITECTURE.md" (blockedBy: Gate 2)
+TaskCreate: "Memory: Phase 2 完成后更新进度" (blockedBy: Phase 2)
+
+TaskCreate: "Gate 3: 读取 phase1_concept.md + ARCHITECTURE.md" (blockedBy: Memory 2)
+TaskCreate: "Phase 3: 脚手架生成" (blockedBy: Gate 3)
+
+TaskCreate: "Gate 4: 读取 phase1_concept.md + ARCHITECTURE.md + CLAUDE.md" (blockedBy: Phase 3)
+TaskCreate: "Phase 4: 编码实现" (blockedBy: Gate 4)
+TaskCreate: "Memory: Phase 4 完成后更新进度" (blockedBy: Phase 4)
+
+TaskCreate: "Gate 5: 读取 phase1_concept.md + 验证准备" (blockedBy: Memory 4)
+TaskCreate: "Phase 5: 集成验证" (blockedBy: Gate 5)
+TaskCreate: "Memory: Phase 5 完成后更新进度" (blockedBy: Phase 5)
+
+TaskCreate: "Gate 6: 读取 phase1_concept.md + phase5_build_report.md" (blockedBy: Memory 5)
+TaskCreate: "Phase 6: 打包发布 → .dmg + README.md" (blockedBy: Gate 6)
+TaskCreate: "Phase 7: 交付与用户验证" (blockedBy: Phase 6)
 ```
+
+**Gate Task 完成条件**：Coordinator 必须用 Read 工具读取指定文件，将读取要点追加到 `_forge_log.md`，然后标记 Gate 为 completed。Phase 工作 Task 在 Gate 未完成前显示为 blocked。
+
+**Memory Task 完成条件**：Coordinator 更新 `forge-[AppName]-progress` memory 文件后标记为 completed。下一个 Gate 在 Memory 未完成前显示为 blocked。
 
 6. 创建 Claude Code memory `forge-[AppName]-progress`，内容包含 App 名称、项目路径、当前阶段（Phase 2）
+7. 创建 `_forge_log.md` 审计日志文件（见"第四层"说明）
 
 ### 关键原则
 - 小而精，功能 3-5 个，不膨胀
@@ -429,8 +465,8 @@ TaskUpdate: `M{N}: [模块名]` → `completed`
 ```
 
 Verifier 返回问题列表后，Coordinator 处理：
-- **Critical**: 必须修复。启动 Implementor sub-agent 修复，然后重新编译。
-- **Warning**: 尽量修复。小修复 (< 20 行) Coordinator 直接做。
+- **Critical**: 必须启动 Implementor sub-agent 修复。**无例外，无论修复大小。** 修复后必须重新启动 Verifier 确认修复正确性。
+- **Warning**: 尽量修复。小修复 (< 20 行) Coordinator 直接做。大修复委托 Implementor。
 - **Info**: 记录但不阻塞。
 
 #### Step 3: 批次功能验证
@@ -454,29 +490,30 @@ pgrep -x [AppName] && echo "✅ 进程存活" || echo "❌ 进程不存在"
 # 如果无法自动验证，记录为"需手动验证"
 ```
 
-#### Step 4: 批次间用户检查点
+#### Step 4: 批次间用户检查点（硬阻塞）
 
 **如果项目模块总数 > 5 且还有后续批次：**
 
-向用户报告当前批次完成状态：
+Coordinator **必须调用 `mcp__conductor__AskUserQuestion` 工具**阻塞执行，等待用户响应。
+
+**不要用普通文本输出代替 AskUserQuestion。不要在用户响应前继续下一批次。**
+
+AskUserQuestion 内容应包含：
+- 本批次完成的模块列表及状态
+- 编译状态和 Verifier 审查结果摘要
+- 本批次的验证标准（供用户手动验证）
+- 选项："继续下一批" / "有问题需要修复"
+
+用户选择"有问题" → 在当前批次内修复后重新 AskUserQuestion。
+
+**Task 依赖保障**：Phase 4 模块 Tasks 中应包含：
 ```
-Batch [N]/[Total] 完成
-
-已实现模块:
-- [x] M1: [名称] — [一句话描述]
-- [x] M2: [名称] — [一句话描述]
-
-编译状态: ✅ 通过
-启动测试: ✅ 通过
-
-请验证以下功能：
-- [ ] [本批次的验证标准 1]
-- [ ] [本批次的验证标准 2]
-
-确认 OK 后我继续实现下一批。如有问题请告诉我。
+TaskCreate: "Batch 1 Verifier 审查" (blockedBy: [batch 1 所有模块])
+TaskCreate: "Checkpoint: Batch 1 用户确认" (blockedBy: Batch 1 Verifier)
+TaskCreate: "Memory: Batch 1 完成" (blockedBy: Checkpoint)
+TaskCreate: "M5: ..." (blockedBy: Memory Batch 1)
 ```
-
-等待用户确认后继续。如用户报告问题，在当前批次内修复后再推进。
+这样 Batch 2 的模块 Tasks 在 Checkpoint 未完成前显示为 blocked。
 
 #### Step 5: 全量编译（最后一个批次完成后）
 
@@ -601,7 +638,19 @@ kill $APP_PID 2>/dev/null
 3. 功能完整性评估表
 ```
 
-发现 Critical 问题 → Coordinator 启动 Implementor sub-agent 修复 → 重新编译 → 回到 Step 1
+发现 Critical 问题 → 执行以下强制二次验证流程：
+
+**二次验证强制机制**：
+
+当 Verifier 发现 Critical 问题时：
+1. Coordinator 创建新 Task：`TaskCreate: "验证轮次 [N+1]: Critical 修复后重新验证" (pending)`
+2. 将此 Task 设为 Phase 5 完成的前置依赖（Phase 5 Task `addBlockedBy` 此验证轮次 Task）
+3. 委托 Implementor sub-agent 修复（**Critical 必须走 sub-agent，无例外**）
+4. 修复 + 编译通过后，启动新的 Verifier sub-agent 重新审查
+5. Verifier 无 Critical → 标记验证轮次 Task 为 completed
+6. Phase 5 可以继续
+
+**Coordinator 不得在有未完成的验证轮次 Task 时标记 Phase 5 为 completed。**
 
 ### Step 4: 生成验证清单
 
@@ -756,6 +805,6 @@ TaskUpdate: Phase 7 → `in_progress`。
 3. **编译是 Coordinator 的责任** — 每个 sub-agent 完成后，Coordinator 亲自编译确认
 4. **状态更新是 Coordinator 的责任** — sub-agent 不碰 Tasks 和 git
 5. **批次交付，增量验证** — 不要一口气写完所有模块再验证
-6. **双层状态持久化** — Task 系统追踪实时进度（运行时级），Claude Code memory 存进度快照（跨对话恢复）
+6. **四层韧性** — Task 依赖链（强制顺序）+ Memory（跨对话恢复）+ 文件接力 + 审计日志（_forge_log.md）
 7. **测试通过 = 用户说 OK** — 自动验证只是预筛，用户确认才是终点
 8. **快速失败，优雅降级** — Implementor 5 轮编译失败则简化实现，不卡住流水线
