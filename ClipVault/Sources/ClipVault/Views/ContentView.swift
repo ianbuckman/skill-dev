@@ -1,9 +1,10 @@
 import SwiftUI
 
-// Placeholder — implemented in Phase 4
 struct ContentView: View {
+    @Environment(AppState.self) private var appState
+
     var body: some View {
-        Text("ClipVault")
-            .frame(width: 320, height: 400)
+        ClipboardListView(appState: appState)
+            .frame(width: 340, height: 480)
     }
 }
